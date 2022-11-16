@@ -158,6 +158,18 @@ import UIKit
 		}
 	}
 	
+    /// If set to true, the slider will return to the default value when user interaction ends
+    ///
+    ///  - Note: Defaults to `false`
+    ///
+    ///  - Warning: This setting does not play nicely when tapping is enabled, be sure to disable tapping if using this feature
+    @IBInspectable open var shouldReturnToDefault: Bool = false
+    
+    ///  Default value to return to
+    ///
+    ///  - Note: if `shouldReturnToDefault` is true.  This value is ignored if `shouldReturnToDefault` is false.
+    @IBInspectable open var defulatValue: Float = 0.0
+    
 	/// Specifies how the value should be incremented/decremented by VoiceOver actions.
 	///
 	/// - Note: The default stepping mode, `.percentage(10)`, matches the behavior of `UISlider`: the value will be adjusted up or down by 10% of the difference between ``minimum`` and ``maximum``.
@@ -583,6 +595,9 @@ import UIKit
 		if sender.state != .ended && sender.state != .cancelled && sender.state != .failed {
 			renderer.popUp = scaleUpWhenInUse
 		} else {
+            if self.shouldReturnToDefault {
+                self.setValue(self.defulatValue, animated: true)
+            }
 			renderer.popUp = false
 			accumulatedMovement = 0
 		}
